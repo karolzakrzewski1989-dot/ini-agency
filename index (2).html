@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I-N-I Music & Sport Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#f4f6fb;--bg-s:#fff;--bg-c:#fff;--bg-h:#eef1f8;
+  --blue:#2eb4e0;--blue-d:#1a8ab0;--blue-l:#5bcbe8;--blue-xl:#d0f0fa;
+  --blue-dim:rgba(46,180,224,0.10);--blue-b:rgba(46,180,224,0.30);
+  --green:#0fa86a;--green-dim:rgba(15,168,106,0.09);
+  --red:#e03050;--red-dim:rgba(224,48,80,0.09);
+  --yellow:#e09020;--yellow-dim:rgba(224,144,32,0.09);
+  --purple:#7c3aed;--purple-dim:rgba(124,58,237,0.09);--purple-b:rgba(124,58,237,0.25);
+  --t1:#181c28;--t2:#5a6480;--t3:#a8b0c8;
+  --border-gray:rgba(0,0,0,0.08);
+  --shadow:0 1px 4px rgba(46,180,224,0.08),0 0 0 1px rgba(46,180,224,0.10);
+  --shadow-md:0 4px 16px rgba(46,180,224,0.12),0 0 0 1px rgba(46,180,224,0.14);
+  --sw:220px;--font:'DM Sans',sans-serif;--display:'Bebas Neue',sans-serif;--mono:'DM Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:13px;}
+body{font-family:var(--font);background:var(--bg);color:var(--t1);min-height:100vh;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--blue-xl);border-radius:4px;}
+.app{display:flex;height:100vh;overflow:hidden;}
+
+.sb{width:var(--sw);min-width:var(--sw);background:var(--bg-s);border-right:1px solid var(--border-gray);display:flex;flex-direction:column;overflow-y:auto;box-shadow:2px 0 8px rgba(46,180,224,0.06);}
+.sb-logo{padding:18px 16px 15px;border-bottom:1px solid var(--border-gray);}
+.sb-logo-top{display:flex;align-items:center;gap:10px;}
+.sb-logo-img{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;box-shadow:0 0 0 2px rgba(46,180,224,0.3);}
+.sb-name{font-family:var(--display);font-size:20px;color:var(--blue-d);letter-spacing:0.04em;line-height:1;}
+.sb-sub{font-size:9px;color:var(--t3);letter-spacing:0.12em;text-transform:uppercase;margin-top:3px;}
+.sb-sect{padding:14px 16px 4px;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);font-weight:600;}
+.sbi{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12.5px;font-weight:500;color:var(--t2);cursor:pointer;border-left:3px solid transparent;transition:all 0.12s;user-select:none;border-radius:0 6px 6px 0;margin-right:8px;}
+.sbi:hover{color:var(--blue-d);background:var(--blue-dim);}
+.sbi.active{color:var(--blue-d);background:var(--blue-dim);border-left-color:var(--blue);font-weight:600;}
+.sbi.active.scouted{color:var(--purple);background:var(--purple-dim);border-left-color:var(--purple);}
+.sbi i{font-size:16px;width:18px;text-align:center;}
+.sb-badge{margin-left:auto;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;font-family:var(--mono);}
+.sb-badge.g{background:var(--green);}
+.sb-badge.r{background:var(--red);}
+.sb-badge.p{background:var(--purple);}
+.sb-badge.y{background:var(--yellow);}
+.sb-foot{margin-top:auto;padding:14px 16px;border-top:1px solid var(--border-gray);}
+.sb-user{display:flex;align-items:center;gap:9px;}
+.sb-av{width:32px;height:32px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.sb-uname{font-size:12px;font-weight:600;color:var(--t1);}
+.sb-urole{font-size:10px;color:var(--t3);}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{background:var(--bg-s);border-bottom:1px solid var(--border-gray);padding:0 22px;height:54px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
+.topbar-title{font-family:var(--display);font-size:24px;color:var(--blue-d);letter-spacing:0.08em;flex:1;line-height:1;}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--bg-h);border:1px solid rgba(46,180,224,0.15);border-radius:8px;padding:6px 12px;min-width:210px;}
+.search-box:focus-within{border-color:rgba(46,180,224,0.3);}
+.search-box input{background:none;border:none;outline:none;color:var(--t1);font-size:12.5px;font-family:var(--font);width:100%;}
+.search-box input::placeholder{color:var(--t3);}
+
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-size:12.5px;font-weight:600;cursor:pointer;border:1px solid transparent;transition:all 0.12s;font-family:var(--font);}
+.btn-blue{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(46,180,224,0.25);}
+.btn-blue:hover{background:var(--blue-d);}
+.btn-purple{background:var(--purple);color:#fff;box-shadow:0 2px 8px rgba(124,58,237,0.2);}
+.btn-purple:hover{background:#6d28d9;}
+.btn-green{background:var(--green);color:#fff;}
+.btn-green:hover{background:#0a8a58;}
+.btn-ghost{background:transparent;color:var(--t2);border:1px solid var(--border-gray);}
+.btn-ghost:hover{background:var(--bg-h);color:var(--t1);}
+.btn-sm{padding:5px 11px;font-size:11.5px;}
+.btn-danger{background:var(--red-dim);color:var(--red);border-color:rgba(224,48,80,0.2);}
+.btn-danger:hover{background:rgba(224,48,80,0.14);}
+
+.content{flex:1;overflow-y:auto;position:relative;}
+.page{padding:22px;display:none;}
+.page.active{display:block;}
+
+.toast{display:none;position:fixed;bottom:20px;right:20px;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.12);}
+.toast.success{background:var(--green);color:#fff;display:block;}
+.toast.error{background:var(--red);color:#fff;display:block;}
+.loader{display:none;position:fixed;inset:0;background:rgba(244,246,251,0.88);align-items:center;justify-content:center;z-index:1000;flex-direction:column;gap:12px;}
+.loader.show{display:flex;}
+.spinner{width:28px;height:28px;border:3px solid var(--blue-xl);border-top-color:var(--blue);border-radius:50%;animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loader-txt{font-family:var(--display);font-size:16px;color:var(--blue-d);letter-spacing:0.1em;}
+
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.metric{background:var(--bg-s);border:1px solid var(--border-gray);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.metric::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.metric.m-blue::before{background:var(--blue);}
+.metric.m-green::before{background:var(--green);}
+.metric.m-yellow::before{background:var(--yellow);}
+.metric.m-purple::before{background:var(--purple);}
+.metric.m-gray::before{background:var(--t3);}
+.metric-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:6px;font-weight:600;}
+.metric-value{font-family:var(--display);font-size:36px;line-height:1;}
+.mv-blue{color:var(--blue);}
+.mv-dark{color:var(--t1);}
+.mv-green{color:var(--green);}
+.mv-yellow{color:var(--yellow);}
+.mv-purple{color:var(--purple);}
+.metric-sub{font-size:11px;color:var(--t2);margin-top:5px;}
+.metric-sub.up{color:var(--green);}
+.metric-sub.alert{color:var(--red);}
+
+.card{background:var(--bg-s);border:1px solid var(--border-gray);border-radius:10px;box-shadow:var(--shadow);}
+.card-hdr{padding:13px 17px 11px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border-gray);}
+.card-title{font-family:var(--display);font-size:14px;color:var(--t1);letter-spacing:0.06em;}
+.card-body{padding:10px 17px;}
+.card-pad{padding:15px 17px;}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr 270px;gap:14px;}
+
+.pr{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;transition:all 0.1s;}
+.pr:last-child{border-bottom:none;}
+.pr:hover{transform:translateX(3px);}
+.pr:hover .pr-name{color:var(--blue-d);}
+.pr-av{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.pr-name{font-size:12.5px;font-weight:500;transition:color 0.1s;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pr-meta{font-size:11px;color:var(--t2);margin-top:1px;}
+.pr-score{font-family:var(--display);font-size:20px;color:var(--blue);letter-spacing:0.04em;}
+
+.player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px;}
+.pcard{background:var(--bg-s);border:1px solid var(--border-gray);border-radius:10px;padding:15px;cursor:pointer;transition:all 0.15s;box-shadow:var(--shadow);}
+.pcard:hover{border-color:rgba(46,180,224,0.3);box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.pcard.scouted-card{border-top:3px solid var(--purple);}
+.pcard.scouted-card:hover{border-color:var(--purple-b);}
+.pcard-name{font-size:14px;font-weight:600;color:var(--t1);}
+.pcard-meta{font-size:11px;color:var(--t2);margin-top:2px;}
+.pcard-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;border-top:1px solid rgba(0,0,0,0.05);padding-top:10px;margin-top:10px;}
+.pcs{text-align:center;}
+.pcs-val{font-family:var(--display);font-size:20px;letter-spacing:0.02em;}
+.pcs-val.blue{color:var(--blue);}
+.pcs-val.green{color:var(--green);}
+.pcs-val.yellow{color:var(--yellow);}
+.pcs-val.purple{color:var(--purple);}
+.pcs-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:0.08em;margin-top:1px;font-weight:600;}
+
+.bar-row{margin-bottom:8px;}
+.bar-lr{display:flex;justify-content:space-between;margin-bottom:3px;}
+.bar-lr span:first-child{font-size:11px;color:var(--t2);}
+.bar-lr span:last-child{font-size:11px;font-weight:700;color:var(--t1);font-family:var(--mono);}
+.bar-track{background:var(--bg-h);border-radius:3px;height:5px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;}
+
+.ptag{display:inline-flex;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;}
+.ptag-blue{background:var(--blue-dim);color:var(--blue-d);border:1px solid rgba(46,180,224,0.3);}
+.ptag-gray{background:rgba(0,0,0,0.06);color:var(--t2);border:1px solid rgba(0,0,0,0.08);}
+.ptag-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(15,168,106,0.2);}
+.ptag-red{background:var(--red-dim);color:var(--red);border:1px solid rgba(224,48,80,0.2);}
+.ptag-yellow{background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(224,144,32,0.2);}
+.ptag-purple{background:var(--purple-dim);color:var(--purple);border:1px solid var(--purple-b);}
+
+.alert-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.05);}
+.alert-row:last-child{border-bottom:none;}
+.adot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.adot-r{background:var(--red);}
+.adot-y{background:var(--yellow);}
+.adot-g{background:var(--green);}
+.adot-b{background:var(--blue);}
+.adot-p{background:var(--purple);}
+.alert-txt{flex:1;font-size:12px;color:var(--t2);line-height:1.5;}
+.alert-txt strong{color:var(--t1);font-weight:600;}
+
+.form-section{margin-bottom:22px;}
+.form-section-title{font-family:var(--display);font-size:16px;color:var(--blue-d);letter-spacing:0.08em;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--blue-xl);display:flex;align-items:center;gap:8px;}
+.form-section-title i{color:var(--blue);font-size:16px;}
+.form-section-title.purple-title{color:var(--purple);border-bottom-color:var(--purple-dim);}
+.form-section-title.purple-title i{color:var(--purple);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-row{margin-bottom:12px;}
+.form-label{display:block;font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:5px;font-weight:700;}
+.form-input,.form-select,.form-textarea{width:100%;padding:8px 11px;font-size:13px;background:var(--bg-h);border:1px solid var(--border-gray);border-radius:7px;color:var(--t1);font-family:var(--font);outline:none;transition:all 0.12s;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-dim);}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--t3);}
+.form-textarea{resize:vertical;min-height:70px;line-height:1.5;}
+.form-select option{background:#fff;}
+
+.slider-wrap{margin-bottom:10px;}
+.slider-lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--t2);margin-bottom:4px;}
+.slider-lbl span:last-child{color:var(--blue-d);font-weight:700;font-family:var(--mono);}
+input[type=range]{width:100%;-webkit-appearance:none;height:5px;border-radius:3px;background:var(--bg-h);border:1px solid rgba(46,180,224,0.15);outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--blue);cursor:pointer;box-shadow:0 0 0 3px rgba(46,180,224,0.2);transition:transform 0.1s;}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2);}
+
+.rec-group{display:flex;gap:8px;margin-top:6px;}
+.rec-btn{flex:1;padding:11px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid;text-align:center;transition:all 0.15s;font-family:var(--display);letter-spacing:0.06em;opacity:0.4;}
+.rec-btn.sel{opacity:1;transform:scale(1.02);box-shadow:0 2px 10px rgba(0,0,0,0.1);}
+.rec-btn-yes{background:var(--green-dim);border-color:rgba(15,168,106,0.3);color:var(--green);}
+.rec-btn-watch{background:var(--blue-dim);border-color:rgba(46,180,224,0.3);color:var(--blue-d);}
+.rec-btn-no{background:var(--red-dim);border-color:rgba(224,48,80,0.25);color:var(--red);}
+
+/* SCOUT DECISION */
+.scout-decision-group{display:flex;gap:8px;margin-top:6px;}
+.sd-btn{flex:1;padding:10px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid;text-align:center;transition:all 0.15s;font-family:var(--display);letter-spacing:0.04em;opacity:0.4;}
+.sd-btn.sel{opacity:1;transform:scale(1.02);}
+.sd-btn-sign{background:var(--green-dim);border-color:rgba(15,168,106,0.3);color:var(--green);}
+.sd-btn-monitor{background:var(--blue-dim);border-color:rgba(46,180,224,0.3);color:var(--blue-d);}
+.sd-btn-pass{background:var(--red-dim);border-color:rgba(224,48,80,0.25);color:var(--red);}
+
+.report-card{background:var(--bg-s);border:1px solid var(--border-gray);border-left:4px solid var(--blue);border-radius:8px;padding:15px;margin-bottom:10px;box-shadow:var(--shadow);}
+.report-card.rec-yes{border-left-color:var(--green);}
+.report-card.rec-no{border-left-color:var(--red);}
+.rc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.rc-name{font-size:14px;font-weight:600;color:var(--t1);}
+.rc-meta{font-size:10px;color:var(--t3);margin-top:2px;font-family:var(--mono);}
+.rc-score{font-family:var(--display);font-size:34px;color:var(--blue);letter-spacing:0.02em;line-height:1;}
+.rc-note{font-size:12px;color:var(--t2);line-height:1.6;border-top:1px solid rgba(0,0,0,0.05);padding-top:8px;margin-top:6px;}
+.rc-tags{display:flex;gap:5px;flex-wrap:wrap;margin:6px 0;}
+.rc-tag{display:inline-flex;background:var(--blue-dim);border:1px solid rgba(46,180,224,0.2);border-radius:20px;padding:2px 8px;font-size:10px;color:var(--blue-d);font-family:var(--mono);}
+
+.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
+.chip{background:var(--bg-s);border:1px solid var(--border-gray);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:500;color:var(--t2);cursor:pointer;transition:all 0.12s;user-select:none;box-shadow:var(--shadow);}
+.chip:hover{border-color:rgba(46,180,224,0.3);color:var(--blue-d);}
+.chip.active{border-color:var(--blue);background:var(--blue-dim);color:var(--blue-d);}
+
+.hero-banner{background:var(--bg-s);border:1px solid var(--border-gray);border-radius:10px;padding:18px 20px;margin-bottom:20px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow);}
+.hero-logo-img{width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0;box-shadow:0 0 0 2px rgba(46,180,224,0.3);}
+.hero-heading{font-family:var(--display);font-size:22px;color:var(--blue-d);letter-spacing:0.08em;line-height:1;}
+.hero-sub{font-size:12px;color:var(--t2);margin-top:4px;}
+.hero-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:5px;}
+
+.empty{text-align:center;padding:40px 20px;color:var(--t3);}
+.empty i{font-size:32px;display:block;margin-bottom:8px;opacity:0.3;}
+.empty p{font-size:13px;}
+.sep{height:1px;background:rgba(0,0,0,0.06);margin:14px 0;}
+.coa-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(0,0,0,0.05);font-size:12px;}
+.coa-row:last-child{border-bottom:none;}
+.coa-lbl{color:var(--t2);}
+.coa-val{font-weight:600;color:var(--t1);}
+.coa-val.blue{color:var(--blue-d);}
+.coa-val.green{color:var(--green);}
+.coa-val.red{color:var(--red);}
+.coa-val.yellow{color:var(--yellow);}
+.delete-btn{background:none;border:none;color:var(--t3);cursor:pointer;padding:4px;border-radius:4px;font-size:14px;transition:color 0.12s;}
+.delete-btn:hover{color:var(--red);}
+
+/* ALERT BANNER */
+.alert-banner{background:#fff8f0;border:1px solid rgba(224,144,32,0.3);border-left:4px solid var(--yellow);border-radius:8px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t1);}
+.alert-banner i{color:var(--yellow);font-size:18px;flex-shrink:0;}
+.alert-banner-red{background:#fff5f5;border-color:rgba(224,48,80,0.3);border-left-color:var(--red);}
+.alert-banner-red i{color:var(--red);}
+
+/* GPS */
+.gps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.gps-box{background:var(--bg-h);border:1px solid rgba(46,180,224,0.15);border-radius:8px;padding:12px 14px;text-align:center;}
+.gps-val{font-family:var(--display);font-size:24px;color:var(--blue);letter-spacing:0.04em;line-height:1;}
+.gps-unit{font-size:10px;color:var(--t3);font-family:var(--mono);margin-top:1px;}
+.gps-lbl{font-size:10px;color:var(--t2);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;}
+
+/* FIN */
+.fin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.fin-box{background:var(--bg-h);border:1px solid rgba(46,180,224,0.15);border-radius:8px;padding:12px 14px;}
+.fin-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:5px;font-weight:700;}
+.fin-val{font-family:var(--display);font-size:18px;color:var(--t1);letter-spacing:0.02em;}
+.fin-val.green{color:var(--green);}
+.fin-val.blue{color:var(--blue-d);}
+.fin-val.yellow{color:var(--yellow);}
+.fin-val.red{color:var(--red);}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(30,40,70,0.4);z-index:500;overflow-y:auto;padding:20px;}
+.modal-overlay.show{display:block;}
+.modal-box{background:var(--bg-s);border:1px solid var(--border-gray);border-radius:12px;max-width:920px;margin:0 auto;overflow:hidden;box-shadow:0 8px 40px rgba(46,180,224,0.15);}
+.modal-tabs{display:flex;border-bottom:1px solid var(--border-gray);background:var(--bg-h);}
+.modal-tab{padding:11px 18px;font-size:12.5px;font-weight:600;color:var(--t2);cursor:pointer;border-bottom:3px solid transparent;transition:all 0.12s;white-space:nowrap;}
+.modal-tab:hover{color:var(--blue-d);}
+.modal-tab.active{color:var(--blue-d);border-bottom-color:var(--blue);background:var(--bg-s);}
+.modal-hero{background:linear-gradient(135deg,var(--blue-dim),rgba(255,255,255,0));border-bottom:1px solid var(--border-gray);padding:22px 24px;display:flex;gap:18px;align-items:flex-start;}
+.modal-hero.scouted-hero{background:linear-gradient(135deg,var(--purple-dim),rgba(255,255,255,0));}
+.modal-av{width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:24px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 4px 12px rgba(46,180,224,0.3);}
+.modal-name{font-family:var(--display);font-size:28px;color:var(--t1);letter-spacing:0.06em;line-height:1;}
+.modal-club{font-size:13px;color:var(--t2);margin-top:5px;}
+.modal-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.modal-big-stats{display:flex;gap:24px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,0.06);}
+.mbs{text-align:center;}
+.mbs-val{font-family:var(--display);font-size:28px;letter-spacing:0.04em;line-height:1;}
+.mbs-val.blue{color:var(--blue);}
+.mbs-val.green{color:var(--green);}
+.mbs-val.yellow{color:var(--yellow);}
+.mbs-val.purple{color:var(--purple);}
+.mbs-val.red{color:var(--red);}
+.mbs-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:0.1em;margin-top:3px;font-weight:700;}
+.modal-body{padding:20px 24px;}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.modal-section-title{font-family:var(--display);font-size:13px;font-weight:700;color:var(--blue-d);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.modal-section-title i{font-size:14px;}
+.info-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(0,0,0,0.05);font-size:12px;}
+.info-row:last-child{border-bottom:none;}
+.info-lbl{color:var(--t2);}
+.info-val{font-weight:600;color:var(--t1);}
+.info-val.blue{color:var(--blue-d);}
+.info-val.green{color:var(--green);}
+.info-val.red{color:var(--red);}
+.info-val.yellow{color:var(--yellow);}
+.modal-report-item{background:var(--bg-h);border:1px solid var(--border-gray);border-left:4px solid var(--blue);border-radius:7px;padding:12px;margin-bottom:8px;}
+.modal-report-item.yes{border-left-color:var(--green);}
+.modal-report-item.no{border-left-color:var(--red);}
+
+.sl-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(0,0,0,0.05);}
+.sl-row:last-child{border-bottom:none;}
+.sl-num{width:24px;height:24px;border-radius:50%;background:var(--blue-dim);border:1px solid rgba(46,180,224,0.3);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:12px;font-weight:700;color:var(--blue-d);flex-shrink:0;}
+
+/* PLAYER TYPE TOGGLE */
+.type-toggle{display:flex;gap:0;background:var(--bg-h);border:1px solid var(--border-gray);border-radius:8px;overflow:hidden;margin-bottom:20px;}
+.type-btn{flex:1;padding:10px;text-align:center;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.12s;color:var(--t2);font-family:var(--display);letter-spacing:0.04em;}
+.type-btn.active-agency{background:var(--blue);color:#fff;}
+.type-btn.active-scouted{background:var(--purple);color:#fff;}
+.type-btn:not(.active-agency):not(.active-scouted):hover{background:rgba(0,0,0,0.04);}
+
+/* REPORT PLAYER INPUT */
+.player-input-group{display:flex;gap:8px;align-items:flex-start;}
+.player-input-group select{flex:1;}
+.player-input-group input{flex:1;}
+.player-input-toggle{font-size:11px;color:var(--blue-d);cursor:pointer;text-decoration:underline;margin-top:6px;display:block;}
+</style>
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+<div class="loader" id="loader"><div class="spinner"></div><div class="loader-txt">ŁADOWANIE...</div></div>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box"></div>
+</div>
+
+<div class="app">
+  <div class="sb">
+    <div class="sb-logo">
+      <div class="sb-logo-top">
+        <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="22" fill="#2eb4e0"/><circle cx="22" cy="22" r="18" fill="white" opacity="0.15"/><text x="22" y="28" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="14" fill="white">INI</text></svg>
+        <div><div class="sb-name">I-N-I</div><div class="sb-sub">Music & Sport Agency</div></div>
+      </div>
+    </div>
+    <div class="sb-sect">Agencja</div>
+    <div class="sbi active" onclick="nav('dashboard',this)"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+    <div class="sbi" onclick="nav('zawodnicy',this)"><i class="ti ti-users"></i> Zawodnicy <span class="sb-badge" id="badge-p">0</span></div>
+    <div class="sbi" onclick="nav('nowy-zawodnik',this);setPlayerType('agency')"><i class="ti ti-user-plus"></i> Dodaj zawodnika</div>
+    <div class="sb-sect">Skauting</div>
+    <div class="sbi" onclick="nav('skautowani',this)"><i class="ti ti-eye"></i> Skautowani <span class="sb-badge p" id="badge-s">0</span></div>
+    <div class="sbi" onclick="nav('nowy-zawodnik',this);setPlayerType('scouted')"><i class="ti ti-user-search"></i> Dodaj obserwowanego</div>
+    <div class="sb-sect">Raporty</div>
+    <div class="sbi" onclick="nav('nowy-raport',this)"><i class="ti ti-report-analytics"></i> Nowy raport</div>
+    <div class="sbi" onclick="nav('raporty',this)"><i class="ti ti-files"></i> Raporty <span class="sb-badge g" id="badge-r">0</span></div>
+    <div class="sbi" onclick="nav('shortlist',this)"><i class="ti ti-list-check"></i> Shortlisty</div>
+    <div class="sb-sect">Alerty</div>
+    <div class="sbi" onclick="nav('alerty',this)"><i class="ti ti-bell"></i> Alerty <span class="sb-badge r" id="badge-alerts">0</span></div>
+    <div class="sb-foot">
+      <div class="sb-user">
+        <div class="sb-av">IN</div>
+        <div><div class="sb-uname">I-N-I Agency</div><div class="sb-urole" id="conn-status">Łączenie...</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="page-title">DASHBOARD</div>
+      <div class="search-box">
+        <i class="ti ti-search" style="color:var(--t3);font-size:14px;"></i>
+        <input type="text" placeholder="Szukaj zawodnika..." id="search-input" oninput="handleSearch(this.value)">
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost btn-sm" onclick="nav('nowy-raport',null)"><i class="ti ti-report-analytics"></i> Raport</button>
+        <button class="btn btn-blue btn-sm" onclick="nav('nowy-zawodnik',null);setPlayerType('agency')"><i class="ti ti-user-plus"></i> Dodaj zawodnika</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="hero-banner">
+          <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="22" fill="#2eb4e0"/><circle cx="22" cy="22" r="18" fill="white" opacity="0.15"/><text x="22" y="28" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="14" fill="white">INI</text></svg>
+          <div style="flex:1;">
+            <div class="hero-heading">I-N-I Music & Sport Agency</div>
+            <div class="hero-sub"><span class="hero-dot"></span>Platforma skautingowa · Zawodnicy agencji i obserwowani · since 2000</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost btn-sm" onclick="nav('raporty',null)"><i class="ti ti-files"></i> Raporty</button>
+            <button class="btn btn-blue btn-sm" onclick="nav('nowy-raport',null)"><i class="ti ti-plus"></i> Nowy raport</button>
+          </div>
+        </div>
+        <div id="dash-agency-alerts"></div>
+        <div class="metrics">
+          <div class="metric m-blue"><div class="metric-label">Zawodnicy agencji</div><div class="metric-value mv-blue" id="m-players">0</div><div class="metric-sub up">Aktywna baza</div></div>
+          <div class="metric m-purple"><div class="metric-label">Obserwowani</div><div class="metric-value mv-purple" id="m-scouted">0</div><div class="metric-sub">W bazie skautingu</div></div>
+          <div class="metric m-green"><div class="metric-label">Rekomendowanych</div><div class="metric-value mv-green" id="m-rec">0</div><div class="metric-sub">Gotowi do transferu</div></div>
+          <div class="metric m-yellow"><div class="metric-label">Alerty umów</div><div class="metric-value mv-yellow" id="m-contract-alerts">0</div><div class="metric-sub alert" id="m-contract-sub">Umowy wygasają</div></div>
+        </div>
+        <div class="dash-grid">
+          <div>
+            <div class="card">
+              <div class="card-hdr"><span class="card-title">ZAWODNICY AGENCJI</span><button class="btn btn-ghost btn-sm" onclick="nav('zawodnicy',null)">Wszyscy</button></div>
+              <div class="card-body" id="dash-players"><div class="empty"><p>Brak zawodników</p></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="card">
+              <div class="card-hdr"><span class="card-title" style="color:var(--purple);">👁 OBSERWOWANI</span><button class="btn btn-ghost btn-sm" onclick="nav('skautowani',null)">Wszyscy</button></div>
+              <div class="card-body" id="dash-scouted"><div class="empty"><p>Brak obserwowanych</p></div></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="card">
+              <div class="card-hdr"><span class="card-title" style="color:var(--red);"><i class="ti ti-bell" style="margin-right:4px;font-size:13px;"></i>ALERTY</span></div>
+              <div class="card-body" id="dash-alerts-mini"><div class="alert-row"><div class="adot adot-b"></div><div class="alert-txt">Platforma gotowa!</div></div></div>
+            </div>
+            <div class="card">
+              <div class="card-pad" style="display:flex;flex-direction:column;gap:8px;">
+                <button class="btn btn-blue" style="width:100%;justify-content:center;" onclick="nav('nowy-raport',null)"><i class="ti ti-report-analytics"></i> NOWY RAPORT</button>
+                <button class="btn btn-ghost" style="width:100%;justify-content:center;" onclick="nav('nowy-zawodnik',null);setPlayerType('agency')"><i class="ti ti-user-plus"></i> Dodaj zawodnika</button>
+                <button class="btn btn-purple btn-sm" style="width:100%;justify-content:center;" onclick="nav('nowy-zawodnik',null);setPlayerType('scouted')"><i class="ti ti-eye"></i> Dodaj obserwowanego</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ZAWODNICY AGENCJI -->
+      <div class="page" id="page-zawodnicy">
+        <div class="filter-bar">
+          <div class="chip active" onclick="filterPlayers('',this,'agency')">Wszyscy</div>
+          <div class="chip" onclick="filterPlayers('Napastnik',this,'agency')">Napastnicy</div>
+          <div class="chip" onclick="filterPlayers('pomocnik',this,'agency')">Pomocnicy</div>
+          <div class="chip" onclick="filterPlayers('obrońca',this,'agency')">Obrońcy</div>
+          <div class="chip" onclick="filterPlayers('Bramkarz',this,'agency')">Bramkarze</div>
+          <div style="margin-left:auto;"><button class="btn btn-blue btn-sm" onclick="nav('nowy-zawodnik',null);setPlayerType('agency')"><i class="ti ti-plus"></i> Dodaj zawodnika</button></div>
+        </div>
+        <div id="agency-alerts-bar"></div>
+        <div class="player-grid" id="players-grid"><div class="empty"><i class="ti ti-users"></i><p>Brak zawodników</p></div></div>
+      </div>
+
+      <!-- SKAUTOWANI -->
+      <div class="page" id="page-skautowani">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div style="display:flex;gap:8px;" class="filter-bar" style="margin-bottom:0;">
+            <div class="chip active" onclick="filterScouted('',this)">Wszyscy</div>
+            <div class="chip" onclick="filterScouted('sign',this)" style="color:var(--green);">Do podpisu</div>
+            <div class="chip" onclick="filterScouted('monitor',this)" style="color:var(--blue-d);">Monitoruj</div>
+            <div class="chip" onclick="filterScouted('pass',this)" style="color:var(--red);">Odrzuceni</div>
+          </div>
+          <button class="btn btn-purple btn-sm" onclick="nav('nowy-zawodnik',null);setPlayerType('scouted')"><i class="ti ti-eye"></i> Dodaj obserwowanego</button>
+        </div>
+        <div class="player-grid" id="scouted-grid"><div class="empty"><i class="ti ti-eye"></i><p>Brak obserwowanych zawodników</p></div></div>
+      </div>
+
+      <!-- NOWY ZAWODNIK / EDYCJA -->
+      <div class="page" id="page-nowy-zawodnik">
+        <div style="max-width:720px;">
+          <div id="edit-banner" style="display:none;background:var(--blue-dim);border:1px solid rgba(46,180,224,0.3);border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:12.5px;color:var(--blue-d);display:flex;align-items:center;gap:8px;">
+            <i class="ti ti-edit" style="font-size:16px;"></i><span id="edit-banner-text">Edytujesz zawodnika</span>
+          </div>
+
+          <div class="type-toggle" id="player-type-toggle">
+            <div class="type-btn active-agency" id="type-btn-agency" onclick="setPlayerType('agency')"><i class="ti ti-users" style="margin-right:5px;"></i>ZAWODNIK AGENCJI</div>
+            <div class="type-btn" id="type-btn-scouted" onclick="setPlayerType('scouted')"><i class="ti ti-eye" style="margin-right:5px;"></i>OBSERWOWANY</div>
+          </div>
+          <input type="hidden" id="nz-type" value="agency">
+
+          <div class="form-section">
+            <div class="form-section-title"><i class="ti ti-user"></i> Dane osobowe</div>
+            <div class="form-grid">
+              <div class="form-row"><label class="form-label">Imię i nazwisko *</label><input class="form-input" id="nz-name" placeholder="np. Jan Kowalski"></div>
+              <div class="form-row"><label class="form-label">Data urodzenia</label><input class="form-input" id="nz-dob" type="date"></div>
+              <div class="form-row"><label class="form-label">Narodowość</label><input class="form-input" id="nz-nat" value="Polska"></div>
+              <div class="form-row"><label class="form-label">Wzrost / Waga</label><input class="form-input" id="nz-hw" placeholder="np. 181 cm / 76 kg"></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title"><i class="ti ti-ball-football"></i> Dane piłkarskie</div>
+            <div class="form-grid">
+              <div class="form-row"><label class="form-label">Pozycja *</label>
+                <select class="form-select" id="nz-pos"><option value="">Wybierz pozycję</option><option>Bramkarz</option><option>Środkowy obrońca</option><option>Lewy obrońca</option><option>Prawy obrońca</option><option>Defensywny pomocnik</option><option>Środkowy pomocnik</option><option>Ofensywny pomocnik</option><option>Lewe skrzydło</option><option>Prawe skrzydło</option><option>Napastnik</option></select>
+              </div>
+              <div class="form-row"><label class="form-label">Dominująca noga</label>
+                <select class="form-select" id="nz-foot"><option>Prawa</option><option>Lewa</option><option>Obustronna</option></select>
+              </div>
+              <div class="form-row"><label class="form-label">Aktualny klub</label><input class="form-input" id="nz-club" placeholder="np. Legia Warszawa"></div>
+              <div class="form-row"><label class="form-label">Liga</label><input class="form-input" id="nz-league" placeholder="np. Ekstraklasa"></div>
+              <div class="form-row"><label class="form-label">Agent / kontakt</label><input class="form-input" id="nz-agent" placeholder="Imię agenta, telefon lub email"></div>
+              <div class="form-row"><label class="form-label">Profil / archetyp</label><input class="form-input" id="nz-archetype" placeholder="np. Box-to-Box, Pressing Winger..."></div>
+            </div>
+          </div>
+
+          <!-- UMOWA Z AGENCJĄ — tylko dla agency -->
+          <div class="form-section" id="agency-contract-section">
+            <div class="form-section-title"><i class="ti ti-building"></i> Umowa z agencją I-N-I</div>
+            <div class="form-grid">
+              <div class="form-row"><label class="form-label">Umowa z agencją do *</label><input class="form-input" id="nz-agency-contract" type="date"></div>
+              <div class="form-row"><label class="form-label">Notatki do umowy</label><input class="form-input" id="nz-agency-notes" placeholder="np. opcja przedłużenia, warunki..."></div>
+            </div>
+          </div>
+
+          <!-- DECYZJA SKAUTINGOWA — tylko dla scouted -->
+          <div class="form-section" id="scout-decision-section" style="display:none;">
+            <div class="form-section-title purple-title"><i class="ti ti-eye"></i> Decyzja skautingowa</div>
+            <p style="font-size:12px;color:var(--t2);margin-bottom:10px;">Oceń czy zawodnik nadaje się do podpisania z agencją.</p>
+            <div class="scout-decision-group">
+              <div class="sd-btn sd-btn-sign sel" id="sd-sign" onclick="selectScoutDecision('sign')"><i class="ti ti-pen"></i> DO PODPISU</div>
+              <div class="sd-btn sd-btn-monitor" id="sd-monitor" onclick="selectScoutDecision('monitor')"><i class="ti ti-eye"></i> MONITORUJ</div>
+              <div class="sd-btn sd-btn-pass" id="sd-pass" onclick="selectScoutDecision('pass')"><i class="ti ti-x"></i> ODRZUĆ</div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title"><i class="ti ti-file-invoice"></i> Kontrakt z klubem i finanse</div>
+            <div class="form-grid">
+              <div class="form-row"><label class="form-label">Kontrakt z klubem do</label><input class="form-input" id="nz-contract" type="date"></div>
+              <div class="form-row"><label class="form-label">Opcja przedłużenia</label>
+                <select class="form-select" id="nz-contract-option"><option value="">Brak opcji</option><option value="tak_klub">Tak — opcja klubu</option><option value="tak_zawodnik">Tak — opcja zawodnika</option><option value="obustronna">Obustronna</option><option value="negocjacje">W trakcie negocjacji</option></select>
+              </div>
+              <div class="form-row"><label class="form-label">Wartość rynkowa (€)</label><input class="form-input" id="nz-value" type="number" placeholder="np. 200000"></div>
+              <div class="form-row"><label class="form-label">Zarobki (€/mies.)</label><input class="form-input" id="nz-salary" type="number" placeholder="np. 5000"></div>
+              <div class="form-row"><label class="form-label">Kwota odstępnego (€)</label><input class="form-input" id="nz-release" type="number" placeholder="np. 500000"></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title"><i class="ti ti-chart-bar"></i> Oceny piłkarskie</div>
+            <div class="form-grid">
+              <div>
+                <div class="slider-wrap"><div class="slider-lbl"><span>Technika</span><span id="sv-tech">7.0</span></div><input type="range" min="1" max="10" step="0.1" value="7" id="s-tech" oninput="upd('sv-tech',this.value)"></div>
+                <div class="slider-wrap"><div class="slider-lbl"><span>Taktyka</span><span id="sv-tact">7.0</span></div><input type="range" min="1" max="10" step="0.1" value="7" id="s-tact" oninput="upd('sv-tact',this.value)"></div>
+              </div>
+              <div>
+                <div class="slider-wrap"><div class="slider-lbl"><span>Fizyczność</span><span id="sv-phys">7.0</span></div><input type="range" min="1" max="10" step="0.1" value="7" id="s-phys" oninput="upd('sv-phys',this.value)"></div>
+                <div class="slider-wrap"><div class="slider-lbl"><span>Mentalność</span><span id="sv-ment">7.0</span></div><input type="range" min="1" max="10" step="0.1" value="7" id="s-ment" oninput="upd('sv-ment',this.value)"></div>
+              </div>
+            </div>
+            <div class="slider-wrap"><div class="slider-lbl"><span>Potencjał (1–10)</span><span id="sv-pot">7</span></div><input type="range" min="1" max="10" step="1" value="7" id="s-pot" oninput="upd('sv-pot',this.value)"></div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title"><i class="ti ti-run"></i> Dane GPS / Fizyczne</div>
+            <div class="form-grid-3">
+              <div class="form-row"><label class="form-label">Max Speed (km/h)</label><input class="form-input" id="nz-gps-speed" type="number" step="0.1" placeholder="np. 32.5"></div>
+              <div class="form-row"><label class="form-label">HSR Distance (m)</label><input class="form-input" id="nz-gps-hsr" type="number" placeholder="np. 850"></div>
+              <div class="form-row"><label class="form-label">Total Distance (km)</label><input class="form-input" id="nz-gps-dist" type="number" step="0.1" placeholder="np. 11.2"></div>
+              <div class="form-row"><label class="form-label">Sprinty (liczba)</label><input class="form-input" id="nz-gps-sprints" type="number" placeholder="np. 24"></div>
+              <div class="form-row"><label class="form-label">Akceleracje (m/s²)</label><input class="form-input" id="nz-gps-acc" type="number" step="0.1" placeholder="np. 3.8"></div>
+              <div class="form-row"><label class="form-label">Obciążenie</label>
+                <select class="form-select" id="nz-gps-load"><option value="">Brak danych</option><option value="Niskie">Niskie</option><option value="Optymalne">Optymalne</option><option value="Wysokie">Wysokie</option><option value="Przeciążenie">Przeciążenie</option></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title"><i class="ti ti-notes"></i> Notatki</div>
+            <div class="form-row"><label class="form-label">Opis / styl gry / obserwacje</label><textarea class="form-textarea" id="nz-note" placeholder="Krótki opis stylu gry, mocnych stron, obserwacji..."></textarea></div>
+          </div>
+
+          <input type="hidden" id="edit-player-id" value="">
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-blue" onclick="savePlayer()" id="save-player-btn" style="padding:10px 24px;font-size:14px;font-family:var(--display);letter-spacing:0.06em;"><i class="ti ti-check"></i> ZAPISZ ZAWODNIKA</button>
+            <button class="btn btn-ghost" onclick="cancelEdit()">Anuluj</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOWY RAPORT -->
+      <div class="page" id="page-nowy-raport">
+        <div style="max-width:680px;">
+          <div class="form-section">
+            <div class="form-section-title"><i class="ti ti-ball-football"></i> Dane meczu</div>
+            <div class="form-grid">
+              <div class="form-row">
+                <label class="form-label">Zawodnik *</label>
+                <select class="form-select" id="nr-player" onchange="handlePlayerSelect(this.value)"><option value="">Wybierz z bazy...</option></select>
+                <span class="player-input-toggle" onclick="toggleManualPlayer()">✏️ Wpisz ręcznie (spoza bazy)</span>
+              </div>
+              <div class="form-row" id="nr-manual-row" style="display:none;">
+                <label class="form-label">Imię i nazwisko (ręcznie)</label>
+                <input class="form-input" id="nr-player-manual" placeholder="np. Piotr Zieliński">
+              </div>
+              <div class="form-row"><label class="form-label">Data meczu</label><input class="form-input" id="nr-date" type="date"></div>
+              <div class="form-row"><label class="form-label">Mecz (drużyny) *</label><input class="form-input" id="nr-match" placeholder="np. Wisła Płock vs Stal Mielec"></div>
+              <div class="form-row"><label class="form-label">Minuty na boisku</label><input class="form-input" id="nr-min" type="number" value="90"></div>
+              <div class="form-row"><label class="form-label">Pozycja w meczu</label>
+                <select class="form-select" id="nr-pos"><option value="">Wybierz</option><option>Bramkarz</option><option>Środkowy obrońca</option><option>Lewy obrońca</option><option>Prawy obrońca</option><option>Defensywny pomocnik</option><option>Środkowy pomocnik</option><option>Ofensywny pomocnik</option><option>Lewe skrzydło</option><option>Prawe skrzydło</option><option>Napastnik</option></select>
+              </div>
+              <div class="form-row"><label class="form-label">Skaut / Autor raportu</label><input class="form-input" id="nr-scout" placeholder="Imię i nazwisko skauta"></div>
+            </div>
+          </div>
+          <div class="form-section">
+            <div class="form-section-title"><i class="ti ti-chart-bar"></i> Oceny w meczu</div>
+            <div class="form-grid">
+              <div>
+                <div class="slider-wrap"><div class="slider-lbl"><span>Technika</span><span id="rv-tech">7.0</span></div><input type="range" min="1" max="10" step="0.1" value="7" id="r-tech" oninput="upd('rv-tech',this.value)"></div>
+                <div class="slider-wrap"><div class="slider-lbl"><span>Taktyka</span><span id="rv-tact">7.0</span></div><input type="range" min="1" max="10" step="0.1" value="7" id="r-tact" oninput="upd('rv-tact',this.value)"></div>
+                <div class="slider-wrap"><div class="slider-lbl"><span>Fizyczność</span><span id="rv-phys">7.0</span></div><input type="range" min="1" max="10" step="0.1" value="7" id="r-phys" oninput="upd('rv-phys',this.value)"></div>
+              </div>
+              <div>
+                <div class="slider-wrap"><div class="slider-lbl"><span>Mentalność</span><span id="rv-ment">7.0</span></div><input type="range" min="1" max="10" step="0.1" value="7" id="r-ment" oninput="upd('rv-ment',this.value)"></div>
+                <div class="slider-wrap"><div class="slider-lbl"><span>Ocena ogólna</span><span id="rv-total">7.0</span></div><input type="range" min="1" max="10" step="0.1" value="7" id="r-total" oninput="upd('rv-total',this.value)"></div>
+              </div>
+            </div>
+          </div>
+          <div class="form-section">
+            <div class="form-section-title"><i class="ti ti-notes"></i> Opis i analiza</div>
+            <div class="form-row"><label class="form-label">Mocne strony</label><textarea class="form-textarea" id="nr-strengths" placeholder="Co zawodnik robił dobrze?"></textarea></div>
+            <div class="form-row"><label class="form-label">Słabe strony</label><textarea class="form-textarea" id="nr-weaknesses" placeholder="Co wymaga poprawy?"></textarea></div>
+            <div class="form-row"><label class="form-label">Zachowanie bez piłki</label><textarea class="form-textarea" id="nr-offball" style="min-height:55px;" placeholder="Pressing, ustawienie, praca bez piłki..."></textarea></div>
+            <div class="form-row"><label class="form-label">Uwagi ogólne</label><textarea class="form-textarea" id="nr-notes" placeholder="Dodatkowe obserwacje..."></textarea></div>
+          </div>
+          <div class="form-section">
+            <div class="form-section-title"><i class="ti ti-star"></i> Rekomendacja *</div>
+            <div class="rec-group">
+              <div class="rec-btn rec-btn-yes" id="rec-yes" onclick="selectRec('yes')"><i class="ti ti-check"></i> REKOMENDUJ</div>
+              <div class="rec-btn rec-btn-watch sel" id="rec-watch" onclick="selectRec('watch')"><i class="ti ti-eye"></i> OBSERWUJ</div>
+              <div class="rec-btn rec-btn-no" id="rec-no" onclick="selectRec('no')"><i class="ti ti-x"></i> ODRZUĆ</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:8px;">
+            <button class="btn btn-blue" onclick="saveReport()" style="padding:10px 24px;font-size:14px;font-family:var(--display);letter-spacing:0.06em;"><i class="ti ti-device-floppy"></i> ZAPISZ RAPORT</button>
+            <button class="btn btn-ghost" onclick="nav('raporty',null)">Anuluj</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RAPORTY -->
+      <div class="page" id="page-raporty">
+        <div class="filter-bar">
+          <div class="chip active" onclick="filterReports('',this)">Wszystkie</div>
+          <div class="chip" onclick="filterReports('yes',this)" style="color:var(--green);">Rekomendowane</div>
+          <div class="chip" onclick="filterReports('watch',this)" style="color:var(--blue-d);">Obserwowani</div>
+          <div class="chip" onclick="filterReports('no',this)" style="color:var(--red);">Odrzuceni</div>
+          <div style="margin-left:auto;"><button class="btn btn-blue btn-sm" onclick="nav('nowy-raport',null)"><i class="ti ti-plus"></i> Nowy raport</button></div>
+        </div>
+        <div id="reports-list"><div class="empty"><i class="ti ti-files"></i><p>Brak raportów</p></div></div>
+      </div>
+
+      <!-- SHORTLIST -->
+      <div class="page" id="page-shortlist">
+        <div class="card">
+          <div class="card-hdr"><span class="card-title">SHORTLISTA TRANSFEROWA — I-N-I AGENCY</span></div>
+          <div class="card-pad" id="shortlist-body"><div class="empty"><p>Brak rekomendowanych zawodników</p></div></div>
+        </div>
+      </div>
+
+      <!-- ALERTY -->
+      <div class="page" id="page-alerty">
+        <div id="alerts-full-list"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL='https://ezilgatmusspcjprevzi.supabase.co';
+const SUPABASE_KEY='sb_publishable_M3Tkdc22HsziSmazc7N7Ww_HjmYpQvn';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const COLORS=['#2eb4e0','#1a8ab0','#3dcaf0','#1560cc','#2090c8','#0e70a0','#50c0e8'];
+const PURPLE_COLORS=['#7c3aed','#6d28d9','#8b5cf6','#5b21b6','#9f75ff'];
+const initials=n=>n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+const fmtDate=d=>d?new Date(d).toLocaleDateString('pl-PL'):'—';
+const calcAge=d=>{if(!d)return'?';const b=new Date(d),n=new Date();let a=n.getFullYear()-b.getFullYear();if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate()))a--;return a;};
+const fmtVal=v=>!v||v==0?'—':v>=1000000?'€'+(v/1000000).toFixed(1)+'M':'€'+parseInt(v).toLocaleString('pl-PL');
+const fmtSalary=v=>!v||v==0?'—':'€'+parseInt(v).toLocaleString('pl-PL')+'/mies.';
+const avgR=p=>parseFloat(((p.rating_tech+p.rating_tact+p.rating_phys+p.rating_ment)/4).toFixed(1));
+const contractOptLabel={'tak_klub':'Tak (opcja klubu)','tak_zawodnik':'Tak (zawodnik)','obustronna':'Obustronna','negocjacje':'W negocjacjach','':'Brak'};
+const loadColor={'Niskie':'var(--green)','Optymalne':'var(--blue)','Wysokie':'var(--yellow)','Przeciążenie':'var(--red)'};
+const scoutDecisionLabel={'sign':'DO PODPISU','monitor':'MONITORUJ','pass':'ODRZUCONY'};
+const scoutDecisionClass={'sign':'ptag-green','monitor':'ptag-blue','pass':'ptag-red'};
+
+let allPlayers=[],allReports=[],selectedRec='watch',selectedScoutDecision='sign',editingId=null,manualPlayerMode=false;
+
+function showLoader(t='ŁADOWANIE...'){const l=document.getElementById('loader');l.querySelector('.loader-txt').textContent=t;l.classList.add('show');}
+function hideLoader(){document.getElementById('loader').classList.remove('show');}
+function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type;setTimeout(()=>t.className='toast',3200);}
+function upd(id,val){document.getElementById(id).textContent=parseFloat(val).toFixed(1);}
+
+// Days until date
+function daysUntil(dateStr){if(!dateStr)return null;const d=new Date(dateStr),n=new Date();return Math.ceil((d-n)/(1000*60*60*24));}
+function monthsUntil(dateStr){if(!dateStr)return null;return daysUntil(dateStr)/30.44;}
+
+function getAgencyAlerts(){
+  const players=allPlayers.filter(p=>p.player_type==='agency');
+  return players.filter(p=>{const m=monthsUntil(p.agency_contract_until);return m!==null&&m<=6&&m>0;});
+}
+
+function nav(page,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sbi').forEach(i=>i.classList.remove('active'));
+  const p=document.getElementById('page-'+page);if(p)p.classList.add('active');
+  if(el)el.classList.add('active');
+  const titles={dashboard:'DASHBOARD',zawodnicy:'ZAWODNICY AGENCJI',skautowani:'SKAUTOWANI','nowy-zawodnik':editingId?'EDYCJA':'NOWY ZAWODNIK','nowy-raport':'NOWY RAPORT',raporty:'RAPORTY',shortlist:'SHORTLISTY',alerty:'ALERTY'};
+  document.getElementById('page-title').textContent=titles[page]||page.toUpperCase();
+  if(page==='nowy-raport'){refreshPlayerSelect();resetReportForm();}
+  if(page==='raporty')renderReports(allReports);
+  if(page==='zawodnicy'){renderAgencyPlayers(allPlayers.filter(p=>p.player_type==='agency'));renderAgencyAlertsBar();}
+  if(page==='skautowani')renderScoutedPlayers(allPlayers.filter(p=>p.player_type==='scouted'));
+  if(page==='dashboard')renderDash();
+  if(page==='shortlist')renderShortlist();
+  if(page==='alerty')renderAlertsPage();
+  if(page==='nowy-zawodnik'&&!editingId)resetPlayerForm();
+}
+
+function cancelEdit(){editingId=null;resetPlayerForm();nav('zawodnicy',null);}
+
+function setPlayerType(type){
+  document.getElementById('nz-type').value=type;
+  const ab=document.getElementById('type-btn-agency');
+  const sb2=document.getElementById('type-btn-scouted');
+  ab.className='type-btn '+(type==='agency'?'active-agency':'');
+  sb2.className='type-btn '+(type==='scouted'?'active-scouted':'');
+  document.getElementById('agency-contract-section').style.display=type==='agency'?'block':'none';
+  document.getElementById('scout-decision-section').style.display=type==='scouted'?'block':'none';
+  document.getElementById('save-player-btn').innerHTML=type==='agency'?'<i class="ti ti-check"></i> ZAPISZ ZAWODNIKA':'<i class="ti ti-eye"></i> ZAPISZ OBSERWOWANEGO';
+  document.getElementById('save-player-btn').className='btn '+(type==='agency'?'btn-blue':'btn-purple');
+}
+
+function selectRec(val){selectedRec=val;['yes','watch','no'].forEach(r=>{const b=document.getElementById('rec-'+r);if(b)b.classList.toggle('sel',r===val);});}
+function selectScoutDecision(val){
+  selectedScoutDecision=val;
+  ['sign','monitor','pass'].forEach(r=>{const b=document.getElementById('sd-'+r);if(b)b.classList.toggle('sel',r===val);});
+}
+
+function toggleManualPlayer(){
+  manualPlayerMode=!manualPlayerMode;
+  document.getElementById('nr-manual-row').style.display=manualPlayerMode?'block':'none';
+  document.getElementById('nr-player').style.display=manualPlayerMode?'none':'block';
+  const link=document.querySelector('.player-input-toggle');
+  link.textContent=manualPlayerMode?'📋 Wybierz z bazy':'✏️ Wpisz ręcznie (spoza bazy)';
+  if(!manualPlayerMode){document.getElementById('nr-player-manual').value='';}
+}
+
+function handlePlayerSelect(val){
+  if(val){const p=allPlayers.find(x=>x.id===val);if(p&&p.position)document.getElementById('nr-pos').value=p.position;}
+}
+
+async function loadAll(){
+  showLoader('ŁĄCZENIE Z BAZĄ...');
+  try{
+    const [pr,rr]=await Promise.all([
+      sb.from('players').select('*').order('created_at',{ascending:false}),
+      sb.from('reports').select('*').order('created_at',{ascending:false})
+    ]);
+    if(pr.error)throw pr.error;if(rr.error)throw rr.error;
+    allPlayers=pr.data||[];allReports=rr.data||[];
+    document.getElementById('conn-status').textContent='✓ Połączono';
+    updateBadges();renderDash();
+  }catch(e){document.getElementById('conn-status').textContent='✗ Błąd';showToast('Błąd: '+e.message,'error');}
+  hideLoader();
+}
+
+function updateBadges(){
+  const agency=allPlayers.filter(p=>p.player_type==='agency'||!p.player_type);
+  const scouted=allPlayers.filter(p=>p.player_type==='scouted');
+  const alerts=getAgencyAlerts();
+  document.getElementById('badge-p').textContent=agency.length;
+  document.getElementById('badge-s').textContent=scouted.length;
+  document.getElementById('badge-r').textContent=allReports.length;
+  document.getElementById('badge-alerts').textContent=alerts.length;
+  document.getElementById('m-players').textContent=agency.length;
+  document.getElementById('m-scouted').textContent=scouted.length;
+  document.getElementById('m-rec').textContent=allReports.filter(r=>r.recommendation==='yes').length;
+  document.getElementById('m-contract-alerts').textContent=alerts.length;
+  if(alerts.length>0){document.getElementById('m-contract-sub').textContent=alerts.length+' umów agencji!';}
+}
+
+function renderAgencyAlertsBar(){
+  const alerts=getAgencyAlerts();
+  const bar=document.getElementById('agency-alerts-bar');
+  if(!bar)return;
+  if(!alerts.length){bar.innerHTML='';return;}
+  bar.innerHTML=alerts.map(p=>{
+    const m=Math.ceil(monthsUntil(p.agency_contract_until));
+    const urgent=m<=3;
+    return`<div class="alert-banner ${urgent?'alert-banner-red':''}">
+      <i class="ti ti-alert-triangle"></i>
+      <div><strong>${p.name}</strong> — umowa z agencją wygasa za <strong>${m} ${m===1?'miesiąc':m<5?'miesiące':'miesięcy'}</strong> (${fmtDate(p.agency_contract_until)})</div>
+      <button class="btn btn-ghost btn-sm" style="margin-left:auto;" onclick="startEdit('${p.id}',{stopPropagation:()=>{}})"><i class="ti ti-edit"></i> Edytuj</button>
+    </div>`;
+  }).join('');
+}
+
+function renderDash(){
+  updateBadges();
+  const agency=allPlayers.filter(p=>p.player_type==='agency'||!p.player_type);
+  const scouted=allPlayers.filter(p=>p.player_type==='scouted');
+  const alerts=getAgencyAlerts();
+
+  // Agency alerts banner on dashboard
+  const dashAlerts=document.getElementById('dash-agency-alerts');
+  if(dashAlerts){
+    if(alerts.length>0){
+      dashAlerts.innerHTML=alerts.slice(0,2).map(p=>{
+        const m=Math.ceil(monthsUntil(p.agency_contract_until));
+        const urgent=m<=3;
+        return`<div class="alert-banner ${urgent?'alert-banner-red':''}" style="margin-bottom:10px;">
+          <i class="ti ti-alert-triangle"></i>
+          <div><strong>${p.name}</strong> — umowa z agencją wygasa za <strong>${m} ${m===1?'miesiąc':m<5?'miesiące':'miesięcy'}</strong></div>
+          <button class="btn btn-ghost btn-sm" style="margin-left:auto;white-space:nowrap;" onclick="nav('alerty',null)"><i class="ti ti-bell"></i> Wszystkie alerty</button>
+        </div>`;
+      }).join('');
+    } else {dashAlerts.innerHTML='';}
+  }
+
+  const dp=document.getElementById('dash-players');
+  if(!agency.length){dp.innerHTML='<div class="empty"><p>Brak zawodników</p></div>';}
+  else{dp.innerHTML=agency.slice(0,5).map((p,i)=>{
+    const avg=avgR(p),color=COLORS[i%COLORS.length];
+    return`<div class="pr" onclick="openProfile('${p.id}')"><div class="pr-av" style="background:${color}">${initials(p.name)}</div><div style="flex:1;min-width:0;"><div class="pr-name">${p.name}</div><div class="pr-meta">${p.club||'—'} · ${p.position||'—'}</div></div><div><div class="pr-score">${avg}</div></div></div>`;
+  }).join('');}
+
+  const ds=document.getElementById('dash-scouted');
+  if(!scouted.length){ds.innerHTML='<div class="empty"><p>Brak obserwowanych</p></div>';}
+  else{ds.innerHTML=scouted.slice(0,5).map((p,i)=>{
+    const avg=avgR(p),color=PURPLE_COLORS[i%PURPLE_COLORS.length];
+    const decCls=scoutDecisionClass[p.scout_decision||'monitor']||'ptag-blue';
+    const decLbl=scoutDecisionLabel[p.scout_decision||'monitor']||'—';
+    return`<div class="pr" onclick="openProfile('${p.id}')"><div class="pr-av" style="background:${color}">${initials(p.name)}</div><div style="flex:1;min-width:0;"><div class="pr-name">${p.name}</div><div class="pr-meta">${p.club||'—'} · <span class="ptag ${decCls}" style="font-size:10px;">${decLbl}</span></div></div><div><div class="pr-score" style="color:var(--purple);">${avg}</div></div></div>`;
+  }).join('');}
+
+  // Mini alerts
+  const ma=document.getElementById('dash-alerts-mini');
+  let html='';
+  alerts.forEach(p=>{
+    const m=Math.ceil(monthsUntil(p.agency_contract_until));
+    html+=`<div class="alert-row"><div class="adot ${m<=3?'adot-r':'adot-y'}"></div><div class="alert-txt"><strong>${p.name}</strong> — umowa agencji za ${m} mies.</div></div>`;
+  });
+  const expClub=allPlayers.filter(p=>{const m=monthsUntil(p.contract_until);return m!==null&&m<=8&&m>0;});
+  expClub.slice(0,2).forEach(p=>{
+    html+=`<div class="alert-row"><div class="adot adot-y"></div><div class="alert-txt"><strong>${p.name}</strong> — kontrakt z klubem za ${Math.ceil(monthsUntil(p.contract_until))} mies.</div></div>`;
+  });
+  if(!html)html='<div class="alert-row"><div class="adot adot-b"></div><div class="alert-txt">Brak pilnych alertów</div></div>';
+  ma.innerHTML=html;
+}
+
+function renderAgencyPlayers(players){
+  const g=document.getElementById('players-grid');
+  if(!players.length){g.innerHTML='<div class="empty"><i class="ti ti-users"></i><p>Brak zawodników agencji</p></div>';return;}
+  g.innerHTML=players.map((p,i)=>{
+    const avg=avgR(p),color=COLORS[i%COLORS.length];
+    const rc=allReports.filter(r=>r.player_id===p.id).length;
+    const agencyMonths=monthsUntil(p.agency_contract_until);
+    const agencyAlert=agencyMonths!==null&&agencyMonths<=6&&agencyMonths>0;
+    const agencyUrgent=agencyMonths!==null&&agencyMonths<=3&&agencyMonths>0;
+    return`<div class="pcard" onclick="openProfile('${p.id}')">
+      ${agencyAlert?`<div style="background:${agencyUrgent?'var(--red-dim)':'var(--yellow-dim)'};border-radius:5px;padding:5px 8px;margin-bottom:8px;font-size:11px;color:${agencyUrgent?'var(--red)':'var(--yellow)'};display:flex;align-items:center;gap:5px;"><i class="ti ti-alert-triangle" style="font-size:13px;"></i>Umowa agencji: ${fmtDate(p.agency_contract_until)}</div>`:''}
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="pr-av" style="background:${color};width:44px;height:44px;border-radius:10px;font-size:15px;">${initials(p.name)}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="pcard-name">${p.name}</div>
+          <div class="pcard-meta">${p.club||'—'} · ${p.league||'—'}</div>
+          <div style="margin-top:5px;display:flex;gap:4px;flex-wrap:wrap;">
+            <span class="ptag ptag-blue">${p.position||'—'}</span>
+            <span class="ptag ptag-gray">${calcAge(p.dob)} lat</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <button class="delete-btn" onclick="startEdit('${p.id}',event)" title="Edytuj"><i class="ti ti-edit"></i></button>
+          <button class="delete-btn" onclick="deletePlayer('${p.id}',event)" title="Usuń"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+      <div class="bar-row"><div class="bar-lr"><span>Technika</span><span>${parseFloat(p.rating_tech).toFixed(1)}</span></div><div class="bar-track"><div class="bar-fill" style="width:${p.rating_tech*10}%;background:${color};"></div></div></div>
+      <div class="bar-row"><div class="bar-lr"><span>Taktyka</span><span>${parseFloat(p.rating_tact).toFixed(1)}</span></div><div class="bar-track"><div class="bar-fill" style="width:${p.rating_tact*10}%;background:${color};opacity:0.7;"></div></div></div>
+      <div class="bar-row"><div class="bar-lr"><span>Fizyczność</span><span>${parseFloat(p.rating_phys).toFixed(1)}</span></div><div class="bar-track"><div class="bar-fill" style="width:${p.rating_phys*10}%;background:var(--green);"></div></div></div>
+      <div class="pcard-stats">
+        <div class="pcs"><div class="pcs-val blue">${avg}</div><div class="pcs-lbl">Ocena</div></div>
+        <div class="pcs"><div class="pcs-val yellow">${p.potential||'—'}</div><div class="pcs-lbl">Potencjał</div></div>
+        <div class="pcs"><div class="pcs-val green">${rc}</div><div class="pcs-lbl">Raporty</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderScoutedPlayers(players){
+  const g=document.getElementById('scouted-grid');
+  if(!players.length){g.innerHTML='<div class="empty"><i class="ti ti-eye"></i><p>Brak obserwowanych zawodników.<br>Dodaj pierwszego!</p></div>';return;}
+  g.innerHTML=players.map((p,i)=>{
+    const avg=avgR(p),color=PURPLE_COLORS[i%PURPLE_COLORS.length];
+    const rc=allReports.filter(r=>r.player_id===p.id).length;
+    const dec=p.scout_decision||'monitor';
+    const decClass={sign:'ptag-green',monitor:'ptag-blue',pass:'ptag-red'}[dec]||'ptag-blue';
+    const decLabel={sign:'DO PODPISU',monitor:'MONITORUJ',pass:'ODRZUCONY'}[dec]||'—';
+    const decBorder={sign:'var(--green)',monitor:'var(--purple)',pass:'var(--red)'}[dec]||'var(--purple)';
+    return`<div class="pcard scouted-card" style="border-top-color:${decBorder};" onclick="openProfile('${p.id}')">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="pr-av" style="background:${color};width:44px;height:44px;border-radius:10px;font-size:15px;">${initials(p.name)}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="pcard-name">${p.name}</div>
+          <div class="pcard-meta">${p.club||'—'} · ${p.league||'—'}</div>
+          <div style="margin-top:5px;display:flex;gap:4px;flex-wrap:wrap;">
+            <span class="ptag ptag-purple">OBSERWOWANY</span>
+            <span class="ptag ${decClass}">${decLabel}</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <button class="delete-btn" onclick="startEdit('${p.id}',event)" title="Edytuj"><i class="ti ti-edit"></i></button>
+          <button class="delete-btn" onclick="deletePlayer('${p.id}',event)" title="Usuń"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+      <div class="bar-row"><div class="bar-lr"><span>Technika</span><span>${parseFloat(p.rating_tech).toFixed(1)}</span></div><div class="bar-track"><div class="bar-fill" style="width:${p.rating_tech*10}%;background:${color};"></div></div></div>
+      <div class="bar-row"><div class="bar-lr"><span>Taktyka</span><span>${parseFloat(p.rating_tact).toFixed(1)}</span></div><div class="bar-track"><div class="bar-fill" style="width:${p.rating_tact*10}%;background:${color};opacity:0.7;"></div></div></div>
+      <div class="bar-row"><div class="bar-lr"><span>Fizyczność</span><span>${parseFloat(p.rating_phys).toFixed(1)}</span></div><div class="bar-track"><div class="bar-fill" style="width:${p.rating_phys*10}%;background:var(--green);"></div></div></div>
+      <div class="pcard-stats">
+        <div class="pcs"><div class="pcs-val purple">${avg}</div><div class="pcs-lbl">Ocena</div></div>
+        <div class="pcs"><div class="pcs-val yellow">${p.potential||'—'}</div><div class="pcs-lbl">Potencjał</div></div>
+        <div class="pcs"><div class="pcs-val green">${rc}</div><div class="pcs-lbl">Raporty</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderAlertsPage(){
+  const el=document.getElementById('alerts-full-list');
+  const agencyAlerts=getAgencyAlerts();
+  const clubAlerts=allPlayers.filter(p=>{const m=monthsUntil(p.contract_until);return m!==null&&m<=8&&m>0;});
+  let html='';
+  if(agencyAlerts.length){
+    html+=`<div style="font-family:var(--display);font-size:16px;color:var(--red);letter-spacing:0.06em;margin-bottom:12px;"><i class="ti ti-building" style="margin-right:6px;"></i>ALERTY UMÓW Z AGENCJĄ</div>`;
+    html+=agencyAlerts.map(p=>{
+      const m=Math.ceil(monthsUntil(p.agency_contract_until));
+      return`<div class="alert-banner ${m<=3?'alert-banner-red':''}">
+        <i class="ti ti-alert-triangle"></i>
+        <div style="flex:1;"><strong>${p.name}</strong> — umowa z agencją wygasa <strong>${fmtDate(p.agency_contract_until)}</strong> (za ${m} ${m===1?'miesiąc':m<5?'miesiące':'miesięcy'})</div>
+        <button class="btn btn-ghost btn-sm" onclick="startEdit('${p.id}',{stopPropagation:()=>{}})"><i class="ti ti-edit"></i> Edytuj</button>
+      </div>`;
+    }).join('');
+    html+='<div style="height:20px;"></div>';
+  }
+  if(clubAlerts.length){
+    html+=`<div style="font-family:var(--display);font-size:16px;color:var(--yellow);letter-spacing:0.06em;margin-bottom:12px;"><i class="ti ti-file-invoice" style="margin-right:6px;"></i>ALERTY KONTRAKTÓW Z KLUBAMI</div>`;
+    html+=clubAlerts.map(p=>{
+      const m=Math.ceil(monthsUntil(p.contract_until));
+      return`<div class="alert-banner">
+        <i class="ti ti-alert-triangle"></i>
+        <div style="flex:1;"><strong>${p.name}</strong> (${p.club||'—'}) — kontrakt z klubem do <strong>${fmtDate(p.contract_until)}</strong> (za ${m} mies.)</div>
+        <button class="btn btn-ghost btn-sm" onclick="openProfile('${p.id}')"><i class="ti ti-eye"></i> Profil</button>
+      </div>`;
+    }).join('');
+  }
+  if(!html)html='<div class="empty"><i class="ti ti-bell"></i><p>Brak aktywnych alertów. Wszystko pod kontrolą!</p></div>';
+  el.innerHTML=html;
+}
+
+function filterScouted(dec,el){
+  document.querySelectorAll('#page-skautowani .chip').forEach(c=>c.classList.remove('active'));
+  if(el)el.classList.add('active');
+  const scouted=allPlayers.filter(p=>p.player_type==='scouted');
+  if(!dec){renderScoutedPlayers(scouted);return;}
+  renderScoutedPlayers(scouted.filter(p=>(p.scout_decision||'monitor')===dec));
+}
+
+function openProfile(id){
+  const p=allPlayers.find(x=>x.id===id);if(!p)return;
+  const isScouted=p.player_type==='scouted';
+  const avg=avgR(p);
+  const colors=isScouted?PURPLE_COLORS:COLORS;
+  const color=colors[allPlayers.indexOf(p)%colors.length];
+  const pReports=allReports.filter(r=>r.player_id===id);
+  const dl={yes:'REKOMENDUJ TRANSFER',watch:'OBSERWUJ',no:'ODRZUCONY'};
+  const hasGps=p.gps_max_speed||p.gps_hsr||p.gps_distance;
+  const agencyMonths=monthsUntil(p.agency_contract_until);
+  const agencyAlert=agencyMonths!==null&&agencyMonths<=6&&agencyMonths>0;
+  const box=document.getElementById('modal-box');
+  box.innerHTML=`
+    <div style="position:relative;">
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('modal-overlay').classList.remove('show')" style="position:absolute;top:14px;right:14px;z-index:10;"><i class="ti ti-x"></i> Zamknij</button>
+      <div class="modal-hero ${isScouted?'scouted-hero':''}">
+        <div class="modal-av" style="background:${color}">${initials(p.name)}</div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <div class="modal-name">${p.name}</div>
+            ${isScouted?`<span class="ptag ptag-purple">OBSERWOWANY</span>`:'<span class="ptag ptag-blue">AGENCJA I-N-I</span>'}
+          </div>
+          <div class="modal-club">${p.club||'—'} · ${p.league||'—'}${p.archetype?' · <em style="color:var(--blue-d)">'+p.archetype+'</em>':''}</div>
+          <div class="modal-tags">
+            <span class="ptag ptag-${isScouted?'purple':'blue'}">${p.position||'—'}</span>
+            <span class="ptag ptag-gray">${calcAge(p.dob)} lat</span>
+            <span class="ptag ptag-gray">${p.nationality||'Polska'}</span>
+            ${isScouted&&p.scout_decision?`<span class="ptag ${scoutDecisionClass[p.scout_decision]||'ptag-blue'}">${scoutDecisionLabel[p.scout_decision]||'—'}</span>`:''}
+          </div>
+          <div class="modal-big-stats">
+            <div class="mbs"><div class="mbs-val ${isScouted?'purple':'blue'}">${avg}</div><div class="mbs-lbl">Śr. ocena</div></div>
+            <div class="mbs"><div class="mbs-val yellow">${p.potential||'—'}</div><div class="mbs-lbl">Potencjał</div></div>
+            <div class="mbs"><div class="mbs-val green">${pReports.length}</div><div class="mbs-lbl">Raporty</div></div>
+            <div class="mbs"><div class="mbs-val blue" style="font-size:20px;">${fmtVal(p.market_value)}</div><div class="mbs-lbl">Wartość</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-tabs">
+        <div class="modal-tab active" onclick="switchModalTab('profil',this)"><i class="ti ti-user" style="margin-right:4px;font-size:12px;"></i>Profil</div>
+        ${!isScouted?`<div class="modal-tab" onclick="switchModalTab('agencja',this)"><i class="ti ti-building" style="margin-right:4px;font-size:12px;"></i>Umowa agencji</div>`:''}
+        <div class="modal-tab" onclick="switchModalTab('finanse',this)"><i class="ti ti-currency-euro" style="margin-right:4px;font-size:12px;"></i>Finanse</div>
+        <div class="modal-tab" onclick="switchModalTab('gps',this)"><i class="ti ti-run" style="margin-right:4px;font-size:12px;"></i>GPS</div>
+        <div class="modal-tab" onclick="switchModalTab('raporty-tab',this)"><i class="ti ti-files" style="margin-right:4px;font-size:12px;"></i>Raporty (${pReports.length})</div>
+      </div>
+    </div>
+    <div class="modal-body">
+
+      <div id="tab-profil">
+        <div class="modal-grid">
+          <div>
+            <div class="modal-section-title"><i class="ti ti-chart-bar"></i> Oceny</div>
+            <div class="bar-row"><div class="bar-lr"><span>Technika</span><span>${parseFloat(p.rating_tech).toFixed(1)}</span></div><div class="bar-track"><div class="bar-fill" style="width:${p.rating_tech*10}%;background:${color};"></div></div></div>
+            <div class="bar-row"><div class="bar-lr"><span>Taktyka</span><span>${parseFloat(p.rating_tact).toFixed(1)}</span></div><div class="bar-track"><div class="bar-fill" style="width:${p.rating_tact*10}%;background:${color};opacity:0.8;"></div></div></div>
+            <div class="bar-row"><div class="bar-lr"><span>Fizyczność</span><span>${parseFloat(p.rating_phys).toFixed(1)}</span></div><div class="bar-track"><div class="bar-fill" style="width:${p.rating_phys*10}%;background:var(--green);"></div></div></div>
+            <div class="bar-row"><div class="bar-lr"><span>Mentalność</span><span>${parseFloat(p.rating_ment).toFixed(1)}</span></div><div class="bar-track"><div class="bar-fill" style="width:${p.rating_ment*10}%;background:${color};opacity:0.6;"></div></div></div>
+          </div>
+          <div>
+            <div class="modal-section-title"><i class="ti ti-info-circle"></i> Dane</div>
+            <div class="info-row"><span class="info-lbl">Data urodzenia</span><span class="info-val">${fmtDate(p.dob)} (${calcAge(p.dob)} lat)</span></div>
+            <div class="info-row"><span class="info-lbl">Narodowość</span><span class="info-val">${p.nationality||'—'}</span></div>
+            <div class="info-row"><span class="info-lbl">Wzrost / Waga</span><span class="info-val">${p.height_weight||'—'}</span></div>
+            <div class="info-row"><span class="info-lbl">Agent</span><span class="info-val blue">${p.agent||'—'}</span></div>
+            ${p.notes?`<div style="margin-top:10px;padding:10px;background:var(--blue-dim);border-radius:7px;font-size:12px;color:var(--t2);line-height:1.5;border-left:3px solid var(--blue);">${p.notes}</div>`:''}
+          </div>
+        </div>
+      </div>
+
+      ${!isScouted?`<div id="tab-agencja" style="display:none;">
+        ${agencyAlert?`<div class="alert-banner ${agencyMonths<=3?'alert-banner-red':''}" style="margin-bottom:14px;"><i class="ti ti-alert-triangle"></i><div><strong>Uwaga!</strong> Umowa z agencją wygasa za <strong>${Math.ceil(agencyMonths)} miesięcy</strong> — ${fmtDate(p.agency_contract_until)}</div></div>`:''}
+        <div class="modal-section-title"><i class="ti ti-building"></i> Umowa z agencją I-N-I</div>
+        <div class="modal-grid">
+          <div>
+            <div class="info-row"><span class="info-lbl">Umowa do</span><span class="info-val ${!p.agency_contract_until?'red':agencyAlert?'yellow':'green'}">${p.agency_contract_until?fmtDate(p.agency_contract_until):'Brak danych'}</span></div>
+            ${p.agency_contract_notes?`<div style="margin-top:10px;padding:10px;background:var(--blue-dim);border-radius:7px;font-size:12px;color:var(--t2);line-height:1.5;">${p.agency_contract_notes}</div>`:''}
+          </div>
+        </div>
+      </div>`:''}
+
+      <div id="tab-finanse" style="display:none;">
+        <div class="fin-grid">
+          <div class="fin-box"><div class="fin-lbl">Wartość rynkowa</div><div class="fin-val green">${fmtVal(p.market_value)}</div></div>
+          <div class="fin-box"><div class="fin-lbl">Zarobki / mies.</div><div class="fin-val blue">${fmtSalary(p.salary)}</div></div>
+          <div class="fin-box"><div class="fin-lbl">Kwota odstępnego</div><div class="fin-val yellow">${p.release_clause?fmtVal(p.release_clause):'Brak klauzuli'}</div></div>
+        </div>
+        <div class="modal-section-title"><i class="ti ti-file-invoice"></i> Kontrakt z klubem</div>
+        <div class="info-row"><span class="info-lbl">Kontrakt do</span><span class="info-val">${p.contract_until?fmtDate(p.contract_until):'Brak danych'}</span></div>
+        <div class="info-row"><span class="info-lbl">Opcja przedłużenia</span><span class="info-val blue">${contractOptLabel[p.contract_option||'']||'Brak'}</span></div>
+      </div>
+
+      <div id="tab-gps" style="display:none;">
+        ${hasGps?`<div class="gps-grid">
+          <div class="gps-box"><div class="gps-val">${p.gps_max_speed||'—'}</div><div class="gps-unit">km/h</div><div class="gps-lbl">Max Speed</div></div>
+          <div class="gps-box"><div class="gps-val">${p.gps_hsr||'—'}</div><div class="gps-unit">m</div><div class="gps-lbl">HSR</div></div>
+          <div class="gps-box"><div class="gps-val">${p.gps_distance||'—'}</div><div class="gps-unit">km</div><div class="gps-lbl">Distance</div></div>
+          <div class="gps-box"><div class="gps-val">${p.gps_sprints||'—'}</div><div class="gps-unit">szt.</div><div class="gps-lbl">Sprinty</div></div>
+          <div class="gps-box"><div class="gps-val">${p.gps_acceleration||'—'}</div><div class="gps-unit">m/s²</div><div class="gps-lbl">Akceleracje</div></div>
+          <div class="gps-box"><div class="gps-val" style="font-size:16px;color:${loadColor[p.gps_load]||'var(--t2)'};">${p.gps_load||'—'}</div><div class="gps-lbl">Obciążenie</div></div>
+        </div>`:
+        `<div class="empty"><i class="ti ti-run"></i><p>Brak danych GPS.<br><a href="#" onclick="startEdit('${p.id}',{stopPropagation:()=>{}});document.getElementById('modal-overlay').classList.remove('show');return false;" style="color:var(--blue);">Dodaj dane →</a></p></div>`}
+      </div>
+
+      <div id="tab-raporty-tab" style="display:none;">
+        ${pReports.length?pReports.map(r=>`
+          <div class="modal-report-item ${r.recommendation==='yes'?'yes':r.recommendation==='no'?'no':''}">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--t1);">${r.player_name} — ${r.match_name||'—'}</div>
+                <div style="font-size:10px;color:var(--t3);margin-top:2px;font-family:var(--mono);">${fmtDate(r.match_date)} · ${r.scout||'—'} · ${r.minutes||90} min</div>
+                <div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap;">
+                  <span class="rc-tag">Tech: ${parseFloat(r.rating_tech).toFixed(1)}</span>
+                  <span class="rc-tag">Takt: ${parseFloat(r.rating_tact).toFixed(1)}</span>
+                  <span class="rc-tag">Fiz: ${parseFloat(r.rating_phys).toFixed(1)}</span>
+                  <span class="ptag ${r.recommendation==='yes'?'ptag-green':r.recommendation==='no'?'ptag-red':'ptag-blue'}">${dl[r.recommendation]||'—'}</span>
+                </div>
+              </div>
+              <div style="font-family:var(--display);font-size:28px;color:var(--blue);letter-spacing:0.02em;">${parseFloat(r.rating_total).toFixed(1)}</div>
+            </div>
+            ${r.strengths||r.weaknesses?`<div style="margin-top:8px;font-size:12px;color:var(--t2);line-height:1.6;border-top:1px solid rgba(0,0,0,0.06);padding-top:8px;">
+              ${r.strengths?'<span style="color:var(--green)">+ </span>'+r.strengths+'<br>':''}
+              ${r.weaknesses?'<span style="color:var(--red)">− </span>'+r.weaknesses:''}
+            </div>`:''}
+          </div>`).join(''):`<div class="empty" style="padding:20px;"><p>Brak raportów.</p></div>`}
+      </div>
+
+      <div style="margin-top:16px;display:flex;gap:8px;border-top:1px solid rgba(0,0,0,0.06);padding-top:16px;flex-wrap:wrap;">
+        <button class="btn ${isScouted?'btn-purple':'btn-blue'} btn-sm" onclick="startEdit('${p.id}',{stopPropagation:()=>{}});document.getElementById('modal-overlay').classList.remove('show');"><i class="ti ti-edit"></i> Edytuj kartę</button>
+        <button class="btn btn-ghost btn-sm" onclick="nav('nowy-raport',null);document.getElementById('modal-overlay').classList.remove('show');"><i class="ti ti-report-analytics"></i> Nowy raport</button>
+        ${isScouted&&p.scout_decision==='sign'?`<button class="btn btn-green btn-sm" onclick="promoteToAgency('${p.id}')"><i class="ti ti-arrow-up"></i> Przenieś do agencji</button>`:''}
+        <button class="btn btn-danger btn-sm" onclick="deletePlayer('${p.id}',{stopPropagation:()=>{}});document.getElementById('modal-overlay').classList.remove('show');"><i class="ti ti-trash"></i> Usuń</button>
+      </div>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('show');
+}
+
+function switchModalTab(tab,el){
+  ['profil','agencja','finanse','gps','raporty-tab'].forEach(t=>{const e=document.getElementById('tab-'+t);if(e)e.style.display='none';});
+  document.querySelectorAll('.modal-tab').forEach(t=>t.classList.remove('active'));
+  const target=document.getElementById('tab-'+tab);if(target)target.style.display='block';
+  if(el)el.classList.add('active');
+}
+
+function closeModal(e){if(e&&e.target!==document.getElementById('modal-overlay'))return;document.getElementById('modal-overlay').classList.remove('show');}
+
+async function promoteToAgency(id){
+  if(!confirm('Przenieść zawodnika do bazy agencji? Zniknie z zakładki Skautowani.'))return;
+  showLoader('PRZENOSZENIE...');
+  const{error}=await sb.from('players').update({player_type:'agency'}).eq('id',id);
+  hideLoader();
+  if(error){showToast('Błąd: '+error.message,'error');return;}
+  const idx=allPlayers.findIndex(p=>p.id===id);
+  if(idx>=0)allPlayers[idx].player_type='agency';
+  document.getElementById('modal-overlay').classList.remove('show');
+  updateBadges();showToast('Zawodnik przeniesiony do agencji!');
+}
+
+function startEdit(id,e){
+  e.stopPropagation();
+  const p=allPlayers.find(x=>x.id===id);if(!p)return;
+  editingId=id;
+  const isScouted=p.player_type==='scouted';
+  setPlayerType(isScouted?'scouted':'agency');
+  document.getElementById('nz-name').value=p.name||'';
+  document.getElementById('nz-dob').value=p.dob||'';
+  document.getElementById('nz-nat').value=p.nationality||'Polska';
+  document.getElementById('nz-hw').value=p.height_weight||'';
+  document.getElementById('nz-pos').value=p.position||'';
+  document.getElementById('nz-foot').value=p.foot||'Prawa';
+  document.getElementById('nz-club').value=p.club||'';
+  document.getElementById('nz-league').value=p.league||'';
+  document.getElementById('nz-agent').value=p.agent||'';
+  document.getElementById('nz-archetype').value=p.archetype||'';
+  document.getElementById('nz-agency-contract').value=p.agency_contract_until||'';
+  document.getElementById('nz-agency-notes').value=p.agency_contract_notes||'';
+  document.getElementById('nz-contract').value=p.contract_until||'';
+  document.getElementById('nz-contract-option').value=p.contract_option||'';
+  document.getElementById('nz-value').value=p.market_value||'';
+  document.getElementById('nz-salary').value=p.salary||'';
+  document.getElementById('nz-release').value=p.release_clause||'';
+  ['tech','tact','phys','ment'].forEach(k=>{const el=document.getElementById('s-'+k);const val=p['rating_'+k]||7;el.value=val;document.getElementById('sv-'+k).textContent=parseFloat(val).toFixed(1);});
+  document.getElementById('s-pot').value=p.potential||7;document.getElementById('sv-pot').textContent=p.potential||7;
+  document.getElementById('nz-gps-speed').value=p.gps_max_speed||'';
+  document.getElementById('nz-gps-hsr').value=p.gps_hsr||'';
+  document.getElementById('nz-gps-dist').value=p.gps_distance||'';
+  document.getElementById('nz-gps-sprints').value=p.gps_sprints||'';
+  document.getElementById('nz-gps-acc').value=p.gps_acceleration||'';
+  document.getElementById('nz-gps-load').value=p.gps_load||'';
+  document.getElementById('nz-note').value=p.notes||'';
+  document.getElementById('edit-player-id').value=id;
+  if(isScouted)selectScoutDecision(p.scout_decision||'sign');
+  const banner=document.getElementById('edit-banner');
+  banner.style.display='flex';
+  document.getElementById('edit-banner-text').textContent='Edytujesz: '+p.name;
+  document.getElementById('player-type-toggle').style.display='none';
+  nav('nowy-zawodnik',null);
+}
+
+function resetPlayerForm(){
+  editingId=null;
+  ['nz-name','nz-dob','nz-hw','nz-club','nz-league','nz-agent','nz-archetype','nz-agency-contract','nz-agency-notes','nz-contract','nz-value','nz-salary','nz-release','nz-gps-speed','nz-gps-hsr','nz-gps-dist','nz-gps-sprints','nz-gps-acc','nz-note'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  document.getElementById('nz-nat').value='Polska';
+  document.getElementById('nz-contract-option').value='';
+  document.getElementById('nz-gps-load').value='';
+  ['tech','tact','phys','ment'].forEach(k=>{document.getElementById('s-'+k).value=7;document.getElementById('sv-'+k).textContent='7.0';});
+  document.getElementById('s-pot').value=7;document.getElementById('sv-pot').textContent='7';
+  document.getElementById('edit-banner').style.display='none';
+  document.getElementById('edit-player-id').value='';
+  document.getElementById('player-type-toggle').style.display='flex';
+  setPlayerType('agency');
+  selectedScoutDecision='sign';selectScoutDecision('sign');
+}
+
+function refreshPlayerSelect(){
+  const sel=document.getElementById('nr-player');
+  sel.innerHTML='<option value="">Wybierz z bazy...</option>';
+  const agency=allPlayers.filter(p=>p.player_type==='agency'||!p.player_type);
+  const scouted=allPlayers.filter(p=>p.player_type==='scouted');
+  if(agency.length){
+    const og=document.createElement('optgroup');og.label='— Zawodnicy agencji —';
+    agency.forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=p.name+(p.position?' · '+p.position:'');og.appendChild(o);});
+    sel.appendChild(og);
+  }
+  if(scouted.length){
+    const og=document.createElement('optgroup');og.label='— Obserwowani —';
+    scouted.forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=p.name+(p.position?' · '+p.position:'');og.appendChild(o);});
+    sel.appendChild(og);
+  }
+}
+
+function resetReportForm(){
+  selectedRec='watch';selectRec('watch');
+  manualPlayerMode=false;
+  document.getElementById('nr-manual-row').style.display='none';
+  document.getElementById('nr-player').style.display='block';
+  document.querySelector('.player-input-toggle').textContent='✏️ Wpisz ręcznie (spoza bazy)';
+  ['nr-match','nr-scout','nr-strengths','nr-weaknesses','nr-offball','nr-notes','nr-player-manual'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  ['r-tech','r-tact','r-phys','r-ment','r-total'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=7;});
+  ['rv-tech','rv-tact','rv-phys','rv-ment','rv-total'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='7.0';});
+}
+
+async function savePlayer(){
+  const name=document.getElementById('nz-name').value.trim();
+  const pos=document.getElementById('nz-pos').value;
+  const ptype=document.getElementById('nz-type').value;
+  if(!name){showToast('Podaj imię i nazwisko!','error');return;}
+  if(!pos){showToast('Wybierz pozycję!','error');return;}
+  const payload={
+    name,position:pos,player_type:ptype,
+    dob:document.getElementById('nz-dob').value||null,
+    nationality:document.getElementById('nz-nat').value||'Polska',
+    foot:document.getElementById('nz-foot').value,
+    club:document.getElementById('nz-club').value||null,
+    league:document.getElementById('nz-league').value||null,
+    agent:document.getElementById('nz-agent').value||null,
+    archetype:document.getElementById('nz-archetype').value||null,
+    agency_contract_until:document.getElementById('nz-agency-contract').value||null,
+    agency_contract_notes:document.getElementById('nz-agency-notes').value||null,
+    contract_until:document.getElementById('nz-contract').value||null,
+    contract_option:document.getElementById('nz-contract-option').value||null,
+    market_value:parseInt(document.getElementById('nz-value').value)||0,
+    salary:parseInt(document.getElementById('nz-salary').value)||0,
+    release_clause:parseInt(document.getElementById('nz-release').value)||0,
+    height_weight:document.getElementById('nz-hw').value||null,
+    rating_tech:parseFloat(document.getElementById('s-tech').value),
+    rating_tact:parseFloat(document.getElementById('s-tact').value),
+    rating_phys:parseFloat(document.getElementById('s-phys').value),
+    rating_ment:parseFloat(document.getElementById('s-ment').value),
+    potential:parseInt(document.getElementById('s-pot').value),
+    gps_max_speed:parseFloat(document.getElementById('nz-gps-speed').value)||0,
+    gps_hsr:parseFloat(document.getElementById('nz-gps-hsr').value)||0,
+    gps_distance:parseFloat(document.getElementById('nz-gps-dist').value)||0,
+    gps_sprints:parseInt(document.getElementById('nz-gps-sprints').value)||0,
+    gps_acceleration:parseFloat(document.getElementById('nz-gps-acc').value)||0,
+    gps_load:document.getElementById('nz-gps-load').value||null,
+    notes:document.getElementById('nz-note').value||null,
+    scout_decision:ptype==='scouted'?selectedScoutDecision:null
+  };
+  if(editingId){
+    showLoader('ZAPISYWANIE ZMIAN...');
+    const{data,error}=await sb.from('players').update(payload).eq('id',editingId).select();
+    hideLoader();
+    if(error){showToast('Błąd: '+error.message,'error');return;}
+    const idx=allPlayers.findIndex(p=>p.id===editingId);
+    if(idx>=0)allPlayers[idx]=data[0];
+    showToast('Zmiany zapisane!');
+  }else{
+    showLoader('ZAPISYWANIE...');
+    const{data,error}=await sb.from('players').insert([payload]).select();
+    hideLoader();
+    if(error){showToast('Błąd: '+error.message,'error');return;}
+    allPlayers.unshift(data[0]);
+    showToast(ptype==='scouted'?'Obserwowany '+name+' dodany!':'Zawodnik '+name+' zapisany!');
+  }
+  editingId=null;updateBadges();resetPlayerForm();
+  nav(ptype==='scouted'?'skautowani':'zawodnicy',null);
+}
+
+async function saveReport(){
+  const pid=document.getElementById('nr-player').value;
+  const manualName=document.getElementById('nr-player-manual').value.trim();
+  const match=document.getElementById('nr-match').value.trim();
+  if(!manualPlayerMode&&!pid){showToast('Wybierz zawodnika lub wpisz ręcznie!','error');return;}
+  if(manualPlayerMode&&!manualName){showToast('Podaj imię i nazwisko zawodnika!','error');return;}
+  if(!match){showToast('Podaj nazwę meczu!','error');return;}
+  const player=pid?allPlayers.find(p=>p.id===pid):null;
+  const playerName=manualPlayerMode?manualName:(player?player.name:'—');
+  showLoader('ZAPISYWANIE RAPORTU...');
+  const{data,error}=await sb.from('reports').insert([{
+    player_id:pid||null,
+    player_name:playerName,
+    player_name_manual:manualPlayerMode?manualName:null,
+    match_date:document.getElementById('nr-date').value||null,
+    match_name:match,
+    scout:document.getElementById('nr-scout').value||'I-N-I Agency',
+    minutes:parseInt(document.getElementById('nr-min').value)||90,
+    position:document.getElementById('nr-pos').value||(player?player.position:null),
+    rating_tech:parseFloat(document.getElementById('r-tech').value),
+    rating_tact:parseFloat(document.getElementById('r-tact').value),
+    rating_phys:parseFloat(document.getElementById('r-phys').value),
+    rating_ment:parseFloat(document.getElementById('r-ment').value),
+    rating_total:parseFloat(document.getElementById('r-total').value),
+    strengths:document.getElementById('nr-strengths').value||null,
+    weaknesses:document.getElementById('nr-weaknesses').value||null,
+    offball:document.getElementById('nr-offball').value||null,
+    notes:document.getElementById('nr-notes').value||null,
+    recommendation:selectedRec
+  }]).select();
+  hideLoader();
+  if(error){showToast('Błąd: '+error.message,'error');return;}
+  allReports.unshift(data[0]);updateBadges();
+  showToast('Raport zapisany!');nav('raporty',null);
+}
+
+async function deletePlayer(id,e){
+  e.stopPropagation();
+  if(!confirm('Usunąć zawodnika? Jego raporty też zostaną usunięte.'))return;
+  showLoader('USUWANIE...');
+  const{error}=await sb.from('players').delete().eq('id',id);
+  hideLoader();
+  if(error){showToast('Błąd: '+error.message,'error');return;}
+  const wasType=allPlayers.find(p=>p.id===id)?.player_type||'agency';
+  allPlayers=allPlayers.filter(p=>p.id!==id);allReports=allReports.filter(r=>r.player_id!==id);
+  updateBadges();
+  if(wasType==='scouted')renderScoutedPlayers(allPlayers.filter(p=>p.player_type==='scouted'));
+  else renderAgencyPlayers(allPlayers.filter(p=>p.player_type==='agency'||!p.player_type));
+  showToast('Usunięto.');
+}
+
+function renderReports(reports){
+  const l=document.getElementById('reports-list');
+  if(!reports.length){l.innerHTML='<div class="empty"><i class="ti ti-files"></i><p>Brak raportów</p></div>';return;}
+  const dl={yes:'REKOMENDUJ TRANSFER',watch:'OBSERWUJ DALEJ',no:'ODRZUCONY'};
+  const dc={yes:'ptag-green',watch:'ptag-blue',no:'ptag-red'};
+  l.innerHTML=reports.map(r=>`
+    <div class="report-card rec-${r.recommendation}">
+      <div class="rc-top">
+        <div style="flex:1;min-width:0;">
+          <div class="rc-name">${r.player_name}${r.player_name_manual?' <span class="ptag ptag-gray" style="font-size:10px;">spoza bazy</span>':''} — ${r.match_name||'—'}</div>
+          <div class="rc-meta">${fmtDate(r.match_date)} · ${r.scout||'I-N-I Agency'} · ${r.minutes||90} min · ${r.position||'—'}</div>
+          <div class="rc-tags">
+            <span class="rc-tag">Tech: ${parseFloat(r.rating_tech).toFixed(1)}</span>
+            <span class="rc-tag">Takt: ${parseFloat(r.rating_tact).toFixed(1)}</span>
+            <span class="rc-tag">Fiz: ${parseFloat(r.rating_phys).toFixed(1)}</span>
+            <span class="rc-tag">Ment: ${parseFloat(r.rating_ment).toFixed(1)}</span>
+            <span class="ptag ${dc[r.recommendation]||'ptag-blue'}">${dl[r.recommendation]||'—'}</span>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;margin-left:16px;">
+          <div class="rc-score">${parseFloat(r.rating_total).toFixed(1)}</div>
+          <button class="delete-btn" onclick="deleteReport('${r.id}',event)"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+      ${r.strengths||r.weaknesses||r.notes?`<div class="rc-note">
+        ${r.strengths?'<strong style="color:var(--green)">+ </strong>'+r.strengths+'<br>':''}
+        ${r.weaknesses?'<strong style="color:var(--red)">− </strong>'+r.weaknesses+'<br>':''}
+        ${r.notes?'<span style="color:var(--t3)">'+r.notes+'</span>':''}
+      </div>`:''}
+    </div>`).join('');
+}
+
+function renderShortlist(){
+  const b=document.getElementById('shortlist-body');
+  const rec=allReports.filter(r=>r.recommendation==='yes');
+  if(!rec.length){b.innerHTML='<div class="empty"><p>Brak rekomendowanych zawodników</p></div>';return;}
+  const seen=new Set();
+  const unique=rec.filter(r=>{if(seen.has(r.player_id||r.player_name))return false;seen.add(r.player_id||r.player_name);return true;});
+  b.innerHTML=unique.map((r,i)=>`
+    <div class="sl-row">
+      <div class="sl-num">${i+1}</div>
+      <div class="pr-av" style="background:${COLORS[i%COLORS.length]};width:32px;height:32px;border-radius:8px;">${initials(r.player_name)}</div>
+      <div style="flex:1;"><div style="font-size:12.5px;font-weight:600;">${r.player_name}</div><div style="font-size:11px;color:var(--t2);">${r.position||'—'} · Ocena: ${parseFloat(r.rating_total).toFixed(1)}</div></div>
+      <span class="ptag ptag-green">REKOMENDUJ</span>
+    </div>`).join('');
+}
+
+function filterPlayers(kw,el,type){
+  document.querySelectorAll('#page-zawodnicy .chip').forEach(c=>c.classList.remove('active'));
+  if(el)el.classList.add('active');
+  const pool=allPlayers.filter(p=>p.player_type==='agency'||!p.player_type);
+  if(!kw){renderAgencyPlayers(pool);return;}
+  renderAgencyPlayers(pool.filter(p=>p.position&&p.position.toLowerCase().includes(kw.toLowerCase())));
+}
+
+function filterReports(rec,el){
+  document.querySelectorAll('#page-raporty .chip').forEach(c=>c.classList.remove('active'));
+  if(el)el.classList.add('active');
+  if(!rec){renderReports(allReports);return;}
+  renderReports(allReports.filter(r=>r.recommendation===rec));
+}
+
+async function deleteReport(id,e){
+  e.stopPropagation();
+  if(!confirm('Usunąć raport?'))return;
+  showLoader('USUWANIE...');
+  const{error}=await sb.from('reports').delete().eq('id',id);
+  hideLoader();
+  if(error){showToast('Błąd: '+error.message,'error');return;}
+  allReports=allReports.filter(r=>r.id!==id);updateBadges();renderReports(allReports);showToast('Raport usunięty.');
+}
+
+function handleSearch(val){
+  if(!val.trim()){renderAgencyPlayers(allPlayers.filter(p=>p.player_type==='agency'||!p.player_type));return;}
+  const q=val.toLowerCase();
+  const res=allPlayers.filter(p=>p.name.toLowerCase().includes(q)||(p.club||'').toLowerCase().includes(q)||(p.position||'').toLowerCase().includes(q));
+  const isScoutedPage=document.getElementById('page-skautowani').classList.contains('active');
+  if(isScoutedPage)renderScoutedPlayers(res.filter(p=>p.player_type==='scouted'));
+  else{nav('zawodnicy',null);renderAgencyPlayers(res.filter(p=>p.player_type==='agency'||!p.player_type));}
+}
+
+loadAll();
+</script>
+</body>
+</html>
